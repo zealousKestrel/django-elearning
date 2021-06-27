@@ -1,0 +1,161 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="header-detail">
+  <h1>Forum</h1>
+  <a href="{% url 'assignment-list' %}">Back</a>
+</div>
+
+<div class="main">
+  <div class="s-card-author">
+    <div class="card">
+      <p class="card-info-table">Author</p>
+      <div class="card-author-content">
+        <div class="card-hero-title">
+          <h1>{{assignment.lesson.author}}</h1>
+        </div>
+      </div>
+      <div class="card-author-info">
+        <div class="flex_col flex_1">
+          <p class="card-text-border">Kelas</p>
+          <p class="card-text-border">Pelajaran</p>
+        </div>
+        <div class="flex_col flex_1">
+          <p class="card-text-border">{{assignment.lesson.grade}}</p>
+          <p class="card-text-border">{{assignment.lesson.name}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-hero-comment">
+    <div class="card mb_15">
+      <p class="card-info-table">Assignment</p>
+      <div class="card-author-info">
+        <div class="flex-col">
+          <p class="card-text-border">Title</p>
+          <p class="card-text-border">Published</p>
+          <p class="card-text-border">Status</p>
+          <p class="card-text-border">Question</p>
+        </div>
+        <div class="flex-col flex_1">
+          <p class="card-text-border">{{assignment.title}}</p>
+          <p class="card-text-border">{{assignment.published}}</p>
+          <p class="card-text-border">{{assignment.status}}</p>
+          <p class="card-text-border">{{assignment.content|safe}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-comments card mb_15">
+      <p class="card-info-table">Upload Answer</p>
+      <form method="POST">
+        {% csrf_token %} {{form.media}} {% for field in form %}
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">
+            {{field.label}}
+          </label>
+          {{field}}
+        </div>
+        {% endfor %}
+        <input type="submit" class="btn btn-primary" />
+      </form>
+    </div>
+    <h3>Project Form</h3>
+    <div class="card-comments card">
+      <p class="card-info-table">Answer</p>
+      <div class="flex_col">
+        {% for answer in answers %}
+        <div class="flex flex-justify-around pdb_15">
+          <p>{{answer.user.username}}</p>
+          <button data-modal-target="#{{answer.id}}" class="button-primary">
+            See Answer
+          </button>
+          <p>{{answer.published}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for answer in answers %}
+
+<div id="{{answer.id}}" class="card-answer-modal flex-center card-modal">
+  <div class="card card-answer">
+    <div class="flex">
+      <p class="card-info-table">Answer</p>
+      <span
+        data-close-button
+        style="cursor: pointer; margin-left: auto"
+        class="flex-center"
+        >&times;</span
+      >
+    </div>
+    <div class="flex_col">
+      <div class="card-answer-content">
+        <div class="card-author-info">
+          <div class="flex_col">
+            <p class="card-text-border">Nama</p>
+            <p class="card-text-border">Pelajaran</p>
+            <p class="card-text-border">Answer</p>
+          </div>
+          <div class="flex_col flex_1">
+            <p class="card-text-border">{{answer.user.username}}</p>
+            <p class="card-text-border">{{assignment.lesson.name}}</p>
+            <p class="card-text-border">{{answer.content|safe}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="overlay"></div>
+{% endfor %}
+
+<script>
+  const openModalButtons = document.querySelectorAll('[data-modal-target]')
+  const closeModalButtons = document.querySelectorAll('[data-close-button]')
+  const overlay = document.getElementById('overlay')
+
+  openModalButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      let but = button.dataset.modalTarget
+      but = but.slice(1, but.length)
+      a = document.getElementById(but)
+      try {
+        const modal = document.querySelector(button.dataset.modalTarget)
+        openModal(modal)
+      } catch {
+        const modal = document.getElementById(but)
+        openModal(modal)
+      }
+    })
+  })
+
+  closeModalButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const modal = button.closest('.card-modal')
+      CloseModal(modal)
+    })
+  })
+
+  overlay.addEventListener('click', () => {
+    const modals = document.querySelectorAll('.card-modal.active')
+    modals.forEach((modal) => {
+      CloseModal(modal)
+    })
+  })
+
+  function openModal(modal) {
+    if (modal == null) return
+    modal.classList.add('active')
+    overlay.classList.add('active')
+    // console.log('Open :', modal)
+  }
+  function CloseModal(modal) {
+    if (modal == null) return
+    modal.classList.remove('active')
+    overlay.classList.remove('active')
+    // console.log('Close :', modal)
+  }
+</script>
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="header-detail">
+  <h1>Forum</h1>
+  <a href="{% url 'lesson-list' %}">Back</a>
+</div>
+
+<div class="main">
+  <div class="s-card-author">
+    <div class="card">
+      <p class="card-info-table">Author</p>
+      <div class="card-author-content">
+        <div class="card-hero-title">
+          <h1>{{lesson.author}}</h1>
+        </div>
+        <div class="card-author-info">
+          <div class="flex_col flex_1">
+            <p class="card-text-border">Kelas</p>
+            <p class="card-text-border">Pelajaran</p>
+          </div>
+          <div class="flex_col flex_1">
+            <p class="card-text-border">{{lesson.grade}}</p>
+            <p class="card-text-border">{{lesson.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-hero-comment">
+    <div class="card">
+      <p class="card-info-table">Forum</p>
+      <div class="card-forum">
+        {% for forum in object_list %}
+        <div class="card-forum-item">
+          <div class="card-forum-item-box">
+            <a
+              href="{% url 'forum-detail' forum.lesson.name forum.id %}"
+              class="button-primary"
+              >Open</a
+            >
+            <p class="ml2">{{forum.title}}</p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2">{{forum.lesson.grade}}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

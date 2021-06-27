@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<h3>Project Form</h3>
+
+<form method="POST">
+  {% csrf_token %} {{form_assignment.media}} {% for field in form_assignment %}
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">
+      {{field.label}}
+    </label>
+    {{field}}
+  </div>
+  {% endfor %}
+  <input type="submit" class="btn btn-primary" />
+</form>
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% load static %}{% block content %}
+<div class="wrapper">
+  <div class="cardListAssignment">
+    <div class="header-detail">
+      <h1>Apps</h1>
+    </div>
+    <div class="card">
+      <div class="apps">
+        <a class="card" href="{% url 'lesson-list' %}" class="forum">
+          <img src="{% static 'images/forum.png' %}" alt="" />
+          <p>Forum</p>
+        </a>
+        <a class="card" href="{% url 'assignment-list' %}">
+          <img src="{% static 'images/assignment.png' %}" alt="" />
+          <p class="forum">Assignments</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

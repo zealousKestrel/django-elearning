@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="wrapper">
+  <div class="cardListAssignment">
+    <div class="header-detail">
+      <h1>Assignments</h1>
+      <a href="{% url 'app' %}">Back</a>
+    </div>
+    <div class="card">
+      <p class="card-info-table">Assignments</p>
+      <div class="card-forum">
+        <div class="card-forum-item">
+          <div class="card-forum-item-box">
+            <p class="ml2"><b>Title</b></p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2"><b>Grade</b></p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2"><b>Teacher</b></p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2"><b>Status</b></p>
+          </div>
+        </div>
+        {% for assignment in object_list %}
+        <div class="card-forum-item">
+          <div class="card-forum-item-box">
+            <a
+              href="{% url 'answer-detail' assignment.lesson.name assignment.id %}"
+              class="button-primary"
+              >Open</a
+            >
+            <p class="ml2">{{assignment.lesson.name}}</p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2">{{assignment.lesson.grade}}</p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2">{{assignment.user}}</p>
+          </div>
+          <div class="card-forum-item-box">
+            <p class="ml2">{{assignment.status}}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

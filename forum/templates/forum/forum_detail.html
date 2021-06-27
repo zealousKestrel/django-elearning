@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="header-detail">
+  <h1>Forum</h1>
+  <a href="{% url 'forum-list' forum.lesson.name %}">Back</a>
+</div>
+
+<div class="main">
+  <div class="s-card-author">
+    <div class="card">
+      <p class="card-info-table">Author</p>
+      <div class="card-author-content">
+        <div class="card-hero-title">
+          <h1>{{forum.lesson.author}}</h1>
+        </div>
+        <div class="card-author-info">
+          <div class="flex_col flex_1">
+            <p class="card-text-border">Kelas</p>
+            <p class="card-text-border">Pelajaran</p>
+          </div>
+          <div class="flex_col flex_1">
+            <p class="card-text-border">{{forum.lesson.grade}}</p>
+            <p class="card-text-border">{{forum.lesson.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="s-hero-comment">
+    <div class="card mb_15">
+      <p class="card-info-table">White Board</p>
+      <div class="card-hero-title">
+        <h1>{{forum.title}}</h1>
+      </div>
+      <p class="mb2">{{forum.content|safe}}</p>
+    </div>
+
+    <div class="card-comments card">
+      <p class="card-info-table">Let's Discussion</p>
+      <section class="comments">
+        {% for comment in comments %}
+        <div class="comment">
+          <div>
+            <p class="comment-user">{{comment.user}}</p>
+            <p class="text-muted">{{comment.published}}</p>
+          </div>
+          <p class="mt_15">{{comment.content}}</p>
+          <p>
+            <a href="/{{comment.file}}">{{comment.file}}</a>
+          </p>
+        </div>
+        {% endfor %}
+      </section>
+
+      <section class="comment-send">
+        <form id="post-form" method="POST">
+          {% csrf_token %}
+          <textarea name="text" cols="10" rows="2" id="message"></textarea>
+          <input type="submit" value="Send" />
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
